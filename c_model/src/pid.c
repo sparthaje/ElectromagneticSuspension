@@ -13,6 +13,10 @@ void pid_set_gains(pid_ctrl_t* pid, double p, double i, double d){
     pid->kd = d;
 }
 
+void pid_set_time_step(pid_ctrl_t* pid, double t){
+    pid->time_step = t;
+}
+
 void pid_reset_gains(pid_ctrl_t* pid){
     pid->kp = 0.0;
     pid->ki = 0.0;
@@ -26,11 +30,13 @@ void pid_reset_integration(pid_ctrl_t* pid){
 double pid_step(pid_ctrl_t* pid, double error){
     double output;
     pid->integrator += error;
+    
+    output  = pid->kp * error;
+    output += pid->ki * (pid->integrator / pid->time_step);
+    output += pid->kd * ((pid->previous_err - error)/pid->time_step);
+    
     pid->previous_err = error;
-    
-    output = pid->kp * error;
-    output += pid->ki * pid->integrator;
-    
+
     printf("F: %lf\n", output);
     return output;
 }

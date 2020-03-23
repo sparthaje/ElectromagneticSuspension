@@ -36,6 +36,7 @@ int main(int argc, char** argv){
 
     p = pid_init((pid_ctrl_t*)malloc(sizeof(pid_ctrl_t)));
     pid_set_gains(p, gains[0], gains[1], gains[2]);
+    pid_set_time_step(p, DT);
 
     FILE* fout;
     int j;
