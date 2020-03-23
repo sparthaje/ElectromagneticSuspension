@@ -1,0 +1,9 @@
+*.out
+venv/
+venv
+build/
+plot.png
+out.txt
+debug.txt
+.vscode/
+.idea/
