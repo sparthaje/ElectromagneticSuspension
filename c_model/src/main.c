@@ -26,16 +26,6 @@ double* parse_args( char** argv){
     return gains;
 }
 
-void open_plot(char filename[50]){
-    char pos_cmd[1000], vel_cmd[1000];
-    sprintf(pos_cmd, "gnuplot -p -e 'set title \"Position v. Time\";plot \"%s\" u 2:3 w l'", filename);
-    sprintf(vel_cmd, "gnuplot -p -e 'set title \"Velocity v. Time\";plot \"%s\" u 2:3 w l'", filename);
-
-
-    system(pos_cmd);
-    system(vel_cmd);
-}
-
 
 int main(int argc, char** argv){
     if(argc != 4){ 
@@ -74,10 +64,9 @@ int main(int argc, char** argv){
     }
 
     fout = fopen(OUTFILE, "w");
-    for(j = 0 ; j < n ; j+=200){ // Output to file, increment by 200 b/c too many points over saturates graph
+    for(j = 0 ; j < n ; j++){ // Output to file, increment by 200 b/c too many points over saturates graph
         fprintf(fout, "%d %0.16f %0.16f %0.16f\n", j, t[j], y[j], vy[j]);
     }
-    open_plot(OUTFILE);
 
     return 0;
 }

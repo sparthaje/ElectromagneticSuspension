@@ -6,6 +6,9 @@ import matplotlib.gridspec as gridspec
 data = pd.read_csv("out.txt", delimiter=" ", header=None, index_col=0)
 
 t, y, vy = data.T.values
+t = [t[x] for x in range(0, len(t), 200)]
+y = [y[x] for x in range(0, len(y), 200)]
+vy = [vy[x] for x in range(0, len(vy), 200)]
 
 gs = gridspec.GridSpec(2,1)
 fig = plt.figure()
