@@ -29,7 +29,7 @@ double pid_step(pid_ctrl_t* pid, double error){
     pid->previous_err = error;
     
     output = pid->kp * error;
-   // output += pid->ki * pid->integrator;
+    output += pid->ki * pid->integrator;
     
     printf("F: %lf\n", output);
     return output;

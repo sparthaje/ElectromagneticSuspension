@@ -49,9 +49,13 @@ int main(int argc, char** argv){
 
     for(j = 1; j < n; j++){
         t[j] = t[j-1] + DT;
-        a = (pid_step(p, error(y[j-1])))/M;
+        a = (pid_step(p, error(y[j-1])))/M - g;
         vy[j] = vy[j-1] + DT*a;
         y[j] = y[j-1] + DT*vy[j];
+        if(y[j] < 0 ){
+            vy[j] = 0.0;
+            y[j] = 0.0;
+        }
         printf("A: %lf, VY: %lf, Y: %lf\n\n", a, vy[j], y[j]);
     }
 
