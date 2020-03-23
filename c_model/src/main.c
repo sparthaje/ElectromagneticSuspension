@@ -9,6 +9,7 @@
 #define Y 0.01// m
 #define DT 0.25 // s
 #define n (int)(0.5 + (4*60*60) /DT) // 90 minutes
+#define OUTFILE "../out.txt"
 
 static inline double* create_array(int length){ return malloc(sizeof(double) * length); }
 static inline double error(double y){ return Y-y; }
@@ -23,6 +24,16 @@ double* parse_args( char** argv){
     sscanf(argv[3], "%lf", &gains[2]);
 
     return gains;
+}
+
+void open_plot(char filename[50]){
+    char pos_cmd[1000], vel_cmd[1000];
+    sprintf(pos_cmd, "gnuplot -p -e 'set title \"Position v. Time\";plot \"%s\" u 2:3 w l'", filename);
+    sprintf(vel_cmd, "gnuplot -p -e 'set title \"Velocity v. Time\";plot \"%s\" u 2:3 w l'", filename);
+
+
+    system(pos_cmd);
+    system(vel_cmd);
 }
 
 
@@ -44,27 +55,29 @@ int main(int argc, char** argv){
     double* t = create_array(n); // create arrays
     double* y = create_array(n);
     double* vy = create_array(n);
-    t[0] = 0.0; // initial values
-    y[0] = 0.0;
-    vy[0] = 0.000000001;
+    t[0]  = 0.0; // initial values
+    y[0]  = 0.0;
+    vy[0] = 0.0;
 
     for(j = 1; j < n; j++){
         t[j] = t[j-1] + DT; // update time
         a = (pid_step(p, error(y[j-1])))/M - g; // calculate net acceleration
-        vy[j] = vy[j-1] + DT*a; // Update velocity 
+
+
+        vy[j] = vy[j-1] + DT*a; // Update velocity
         y[j] = y[j-1] + DT*vy[j]; // Update position
         if(y[j] < 0){ // Pod cannot go below track => position cannot be negative
             y[j] = 0.0; // Reset position to 0
-            vy[j] = 0.0; // Reset veloicty to 0
+            vy[j] = 0.0; // Reset velocity to 0
         }
         printf("A: %lf, VY: %lf, Y: %lf\n\n", a, vy[j], y[j]); // debugging
     }
 
-    fout = fopen("../out.txt", "w");
+    fout = fopen(OUTFILE, "w");
     for(j = 0 ; j < n ; j+=200){ // Output to file, increment by 200 b/c too many points over saturates graph
-        fprintf(fout, "%d,%0.16f,%0.16f,%0.16f\n",j,  t[j], y[j], vy[j]);
+        fprintf(fout, "%d %0.16f %0.16f %0.16f\n", j, t[j], y[j], vy[j]);
     }
-
+    open_plot(OUTFILE);
 
     return 0;
 }

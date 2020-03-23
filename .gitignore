@@ -7,3 +7,4 @@ out.txt
 debug.txt
 .vscode/
 .idea/
+cmake-build-debug/

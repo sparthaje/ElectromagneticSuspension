@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
 
-data = pd.read_csv("out.txt", delimiter=",", header=None, index_col=0)
+data = pd.read_csv("out.txt", delimiter=" ", header=None, index_col=0)
 
 t, y, vy = data.T.values
 
