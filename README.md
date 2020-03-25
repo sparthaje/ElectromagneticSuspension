@@ -59,5 +59,3 @@ This graph shows the position of the pod over the simulation period, with the bl
 
 ![Position Graph](kinematics_model/output/position.PNG)
 
-# GNU Plot
-`brew install gnuplot`   
