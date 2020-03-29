@@ -13,7 +13,7 @@ The model takes in an input force from a PID controller and outputs the followin
 - The position of the pod
 
 
-The plant was put in the following model, to tune a PID controller:
+The plant was put in the following model, to tune a continous parallel PID controller:
 ![Controller](kinematics_model/system_images/ControlSystem.PNG)
 
 These were the plant parameters:
@@ -58,4 +58,8 @@ This graph shows the position of the pod over the simulation period, with the bl
 <sup>Note the y axis is on the scale of 10<sup>-3</sup> meters</sup>
 
 ![Position Graph](kinematics_model/output/position.PNG)
+
+## Discrete Controller
+
+The previously found tuned gains worked well in a discrete PID controller with a sample time of 3.27 * 10<sup>-4</sup> s (sample time found experimentally on a SB-Freeduino).
 
